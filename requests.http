@@ -1,0 +1,51 @@
+@baseUrl = http://localhost:3000/api
+@locationId = REEMPLAZA_UUID_LOCATION
+@userId = REEMPLAZA_UUID_USER
+@animalId = REEMPLAZA_UUID_ANIMAL
+
+### 1. Crear un refugio
+POST {{baseUrl}}/locations
+Content-Type: application/json
+
+{
+  "name": "Refugio Patitas Felices",
+  "city": "Medellin",
+  "address": "Calle 10 #43-25",
+  "phone": "3001234567"
+}
+
+### 2. Crear un usuario
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "Cristiana Arango",
+  "email": "cris@ejemplo.com",
+  "phone": "3109876543"
+}
+
+### 3. Crear un animal con relaciones
+POST {{baseUrl}}/animals
+Content-Type: application/json
+
+{
+  "nombre": "Luna",
+  "especie": "perro",
+  "edad": 18,
+  "descripcion": "Labrador amigable y juguetona",
+  "contacto": "refugio@ejemplo.com",
+  "locationId": "{{locationId}}",
+  "registeredById": "{{userId}}"
+}
+
+### 4. Agregar animal a favoritos
+POST {{baseUrl}}/users/{{userId}}/favorites/{{animalId}}
+
+### 5. Ver favoritos del usuario
+GET {{baseUrl}}/users/{{userId}}/favorites
+
+### 6. Quitar animal de favoritos
+DELETE {{baseUrl}}/users/{{userId}}/favorites/{{animalId}}
+
+### 7. Ver un refugio con sus animales
+GET {{baseUrl}}/locations/{{locationId}}
