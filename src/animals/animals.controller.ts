@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AnimalsService } from './animals.service';
 import { CreateAnimalDto } from './dto/create-animal.dto';
-import { PaginationDto } from './dto/pagination.dto';
+import { QueryAnimalsDto } from './dto/query-animals.dto';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
 
 @Controller('animals')
@@ -24,8 +24,8 @@ export class AnimalsController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.animalsService.findAll(paginationDto);
+  findAll(@Query() query: QueryAnimalsDto) {
+    return this.animalsService.findAll(query);
   }
 
   // ParseUUIDPipe valida que :id sea un UUID válido

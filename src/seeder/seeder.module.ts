@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdoptionRequest } from '../adoption-requests/entities/adoption-request.entity';
 import { Animal } from '../animals/entities/animal.entity';
 import { Location } from '../locations/entities/location.entity';
 import { User } from '../users/entities/user.entity';
@@ -19,11 +20,11 @@ import { SeederService } from './seeder.service';
         username: configService.getOrThrow('DB_USER'),
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_NAME'),
-        entities: [Location, User, Animal],
+        entities: [Location, User, Animal, AdoptionRequest],
         synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([Location, User, Animal]),
+    TypeOrmModule.forFeature([Location, User, Animal, AdoptionRequest]),
   ],
   providers: [SeederService],
 })
