@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Location } from '../locations/entities/location.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateAnimalDto } from './dto/create-animal.dto';
+import { PaginationDto } from './dto/pagination.dto';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
 import { Animal } from './entities/animal.entity';
 
@@ -57,10 +58,17 @@ export class AnimalsService {
     }
   }
 
-  findAll() {
-    return this.animalRepo.find({
+  async findAll(pagination: PaginationDto) {
+    const page = pagination.page ?? 1;
+    const limit = pagination.limit ?? 10;
+
+    const [data, total] = await this.animalRepo.findAndCount({
       relations: ['registeredBy'],
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {
