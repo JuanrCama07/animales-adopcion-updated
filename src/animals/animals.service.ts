@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Location } from '../locations/entities/location.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateAnimalDto } from './dto/create-animal.dto';
@@ -25,6 +26,7 @@ export class AnimalsService {
     private readonly locationRepo: Repository<Location>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async create(dto: CreateAnimalDto) {
@@ -103,6 +105,22 @@ export class AnimalsService {
     const animal = await this.findOne(id);
     await this.animalRepo.remove(animal);
     return { message: 'Animal eliminado exitosamente' };
+  }
+
+  async uploadImage(id: string, file: Express.Multer.File) {
+    await this.findOne(id);
+
+    const imageUrl = await this.cloudinaryService.uploadBuffer(
+      file.buffer,
+      'animales-adopcion',
+    );
+
+    try {
+      await this.animalRepo.update(id, { image: imageUrl });
+      return await this.findOne(id);
+    } catch (err) {
+      this.handleError(err);
+    }
   }
 
   private handleError(err: any) {

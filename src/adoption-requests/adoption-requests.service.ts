@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -36,7 +37,7 @@ export class AdoptionRequestsService {
     }
 
     if (animal.estado === 'adoptado') {
-      throw new BadRequestException(
+      throw new ConflictException(
         'Este animal ya fue adoptado y no está disponible',
       );
     }
@@ -54,7 +55,7 @@ export class AdoptionRequestsService {
     });
 
     if (existing) {
-      throw new BadRequestException(
+      throw new ConflictException(
         'Ya existe una solicitud pendiente para este animal',
       );
     }

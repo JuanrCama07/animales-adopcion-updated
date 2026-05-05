@@ -32,7 +32,7 @@ export class Animal {
   estado: string;
 
   @Column({ nullable: true })
-  image: string;
+  image?: string; // URL de Cloudinary
 
   @Column()
   contacto: string;

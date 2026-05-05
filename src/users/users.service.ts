@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -117,7 +118,7 @@ export class UsersService {
 
   private handleError(err: any): never {
     if (err.code === '23505') {
-      throw new BadRequestException(`Email duplicado: ${err.detail}`);
+      throw new ConflictException(`Email duplicado: ${err.detail}`);
     }
 
     throw new InternalServerErrorException('Error inesperado');
